@@ -68,6 +68,8 @@ public class CharacterController {
         view.showPlayScreen(character);
         gameLoop();
         if (character.get_hitpoints() > 0) {
+            character.set_experience(character.get_experience() + 10);
+            levelUpCharacter();
             characterModel.save();
             view.showYesNoDialog("You have completed this stage.\nDo you want to play another game?");
             if (view.getAnswer()) {
@@ -151,11 +153,16 @@ public class CharacterController {
             }
         }
         if (character.get_hitpoints() > 0) {
+            character.set_experience(character.get_experience() + (100 * c.get_level()));
+            levelUpCharacter();
+            characterModel.save();
             actions.add(character.get_name() + " has defeated " + c.get_name());
+            view.showFightSummary(actions);
         } else {
             actions.add(character.get_name() + " has been defeated by " + c.get_name());
+            view.showFightSummary(actions);
+            startGame();
         }
-        view.showFightSummary(actions);
     }
 
     private void navigate () {
@@ -182,5 +189,17 @@ public class CharacterController {
                 break;
         }
         character.set_pos(tmp);
+    }
+
+    private void levelUpCharacter () {
+        int xpNeeded = (int) (character.get_level() * 1000 + Math.pow(character.get_level() - 1, 2) * 450);
+        if (character.get_experience() >= xpNeeded) {
+            character.set_experience(character.get_experience() - xpNeeded);
+            character.set_attack((int) (character.get_attack() * 1.5));
+            character.set_hitpoints((int) (20 * (1.6 * character.get_level())));
+            character.set_defense((int) (character.get_defense() * 1.7));
+            character.set_level(character.get_level() + 1);
+            view.displayMessage(character.get_name() + " is now at level " + character.get_level());
+        }
     }
 }
