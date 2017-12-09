@@ -96,8 +96,10 @@ public class CharacterController {
             pos[1] = random.nextInt(mapSize - 1) + 1;
             Character tmpC = characterSpawner.spawnBeast(types[type]);
             tmpC.set_pos(pos);
-            System.out.println(tmpC + " - " + Arrays.toString(tmpC.get_pos()));
             enemies.add(tmpC);
+        }
+        for (Character c : enemies) {
+            System.out.println (c.get_name() + " - " + Arrays.toString(c.get_pos()));
         }
     }
 
@@ -107,10 +109,10 @@ public class CharacterController {
     }
 
     private void gameLoop () {
-        int decision = random.nextInt(100) + 1;
         int[] oldPos = new int[2];
         System.arraycopy(character.get_pos(), 0, oldPos, 0, oldPos.length);
         while (inBounds() && character.get_hitpoints() > 0) {
+            int decision = random.nextInt(100) + 1;
             for (Character c : enemies) {
                 if (Arrays.equals(c.get_pos(), character.get_pos())) {
                     view.showYesNoDialog("Do you want to fight: '" + c.get_name() + "'");

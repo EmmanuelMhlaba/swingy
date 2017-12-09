@@ -81,7 +81,7 @@ public class Character {
     }
 
     public void set_pos(int[] pos) {
-        this.pos = pos;
+        System.arraycopy(pos, 0, this.pos, 0, pos.length);
     }
 
     @Override
