@@ -160,4 +160,12 @@ public class ConsoleView implements View {
             showNavigationOptions(character);
         }
     }
+
+    public void showFightSummary(ArrayList<String> summary) {
+        System.out.println ("===== Fight =====");
+        for (String s : summary) {
+            System.out.println (s);
+        }
+        System.out.println ("==========\n");
+    }
 }

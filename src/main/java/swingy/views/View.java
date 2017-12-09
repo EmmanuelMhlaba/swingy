@@ -17,4 +17,5 @@ public interface View {
     public void showYesNoDialog (String question);
     public boolean getAnswer ();
     public void showNavigationOptions (Character character);
+    public void showFightSummary (ArrayList<String> summary);
 }

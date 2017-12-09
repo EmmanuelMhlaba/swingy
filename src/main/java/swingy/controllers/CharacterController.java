@@ -134,7 +134,28 @@ public class CharacterController {
     }
 
     private void fight (Character c) {
-        view.displayMessage(character.get_name() + " has engaged combat with: " + c.get_name());
+        ArrayList<String> actions = new ArrayList<String>();
+        actions.add(character.get_name() + " has engaged combat with: " + c.get_name());
+        while (c.get_hitpoints() > 0 && character.get_hitpoints() > 0) {
+            int decision = random.nextInt(100) + 1;
+            if (decision <= 50) {
+                c.set_hitpoints(c.get_hitpoints() - character.get_attack());
+                actions.add(character.get_name() + " attacks " + c.get_name() + " causing " +
+                        character.get_attack() + " damage. (" + character.get_name() + ": " +
+                        character.get_hitpoints() + "; " + c.get_name() + ": " + c.get_hitpoints() + ")");
+            } else {
+                character.set_hitpoints(character.get_hitpoints() - c.get_attack());
+                actions.add(c.get_name() + " attacks " + character.get_name() + " causing " +
+                        c.get_attack() + " damage. (" + character.get_name() + ": " +
+                        character.get_hitpoints() + "; " + c.get_name() + ": " + c.get_hitpoints() + ")");
+            }
+        }
+        if (character.get_hitpoints() > 0) {
+            actions.add(character.get_name() + " has defeated " + c.get_name());
+        } else {
+            actions.add(character.get_name() + " has been defeated by " + c.get_name());
+        }
+        view.showFightSummary(actions);
     }
 
     private void navigate () {
