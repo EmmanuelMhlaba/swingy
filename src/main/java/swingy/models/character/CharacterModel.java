@@ -14,13 +14,16 @@ public class CharacterModel extends Model {
     }
 
     private void load () {
-        String _name = null, _class = null;
+        String _name = "", _class = "";
         int _level = 0, _experience = 0, _attack = 0, _defense = 0, _hitpoints = 0;
+        Artifact weapon  = new Artifact("Weapon", "none", 0);
+        Artifact armor  = new Artifact("Armor", "none", 0);
+        Artifact helm  = new Artifact("Helm", "none", 0);
         ArrayList<String> list = readFile();
         int line = 1;
         for (String s : list) {
             String[] fields = s.split(",");
-            if (fields.length == 7) {
+            if (fields.length == 10) {
                 for (String f : fields) {
                     String[] vals = f.split("=");
                     if (vals.length == 2) {
@@ -41,6 +44,21 @@ public class CharacterModel extends Model {
                                 _defense = Integer.parseInt(vals[1]);
                             } else if (vals[0].equals("Hitpoints")) {
                                 _hitpoints = Integer.parseInt(vals[1]);
+                            } else if (vals[0].equals("Weapon")) {
+                                String[] tmp1 = vals[1].split("\\(");
+                                String tmp2 = tmp1[1].substring(0, tmp1[1].length() - 1);
+                                weapon.name = tmp1[0].trim();
+                                weapon.stat = Integer.parseInt(tmp2);
+                            } else if (vals[0].equals("Armor")) {
+                                String[] tmp1 = vals[1].split("\\(");
+                                String tmp2 = tmp1[1].substring(0, tmp1[1].length() - 1);
+                                armor.name = tmp1[0].trim();
+                                armor.stat = Integer.parseInt(tmp2);
+                            } else if (vals[0].equals("Helm")) {
+                                String[] tmp1 = vals[1].split("\\(");
+                                String tmp2 = tmp1[1].substring(0, tmp1[1].length() - 1);
+                                helm.name = tmp1[0].trim();
+                                helm.stat = Integer.parseInt(tmp2);
                             }
                         } catch (NumberFormatException e) {
                             System.err.println(e.getMessage());
@@ -49,7 +67,11 @@ public class CharacterModel extends Model {
                         System.err.println("Error: format is incorrect in file '" + filename + "' at line: " + line + ".");
                     }
                 }
-                characters.add(new Character(_name, _class, _level, _experience, _attack, _defense, _hitpoints));
+                Character character = new Character(_name, _class, _level, _experience, _attack, _defense, _hitpoints);
+                character.setWeapon(weapon);
+                character.setArmor(armor);
+                character.setHelm(helm);
+                characters.add(character);
             } else {
                 System.err.println("Error: format is incorrect in file '" + filename + "' at line: " + line + ".");
             }

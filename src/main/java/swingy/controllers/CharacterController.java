@@ -100,6 +100,7 @@ public class CharacterController {
             tmpC.set_pos(pos);
             enemies.add(tmpC);
         }
+        // For testing
         for (Character c : enemies) {
             System.out.println (c.get_name() + " - " + Arrays.toString(c.get_pos()));
         }
@@ -117,15 +118,21 @@ public class CharacterController {
             int decision = random.nextInt(100) + 1;
             for (Character c : enemies) {
                 if (Arrays.equals(c.get_pos(), character.get_pos())) {
-                    view.showYesNoDialog("Do you want to fight: '" + c.get_name() + "'");
+                    view.showYesNoDialog("Do you want to fight: '" + c.getStats() + "'");
                     if (view.getAnswer()) {
                         fight(c);
+                        if (character.get_hitpoints() <= 0) {
+                            return;
+                        }
                     } else {
                         if (decision >= 50) {
                             System.arraycopy(oldPos, 0, character.get_pos(), 0, oldPos.length);
                             view.displayMessage(character.get_name() + " ran away to position: " + Arrays.toString(character.get_pos()));
                         } else {
                             fight(c);
+                            if (character.get_hitpoints() <= 0) {
+                                return;
+                            }
                         }
                     }
                 }
@@ -138,17 +145,22 @@ public class CharacterController {
     private void fight (Character c) {
         ArrayList<String> actions = new ArrayList<String>();
         actions.add(character.get_name() + " has engaged combat with: " + c.get_name());
+        actions.add(c.get_name() + " is equipped with: " + c.getEquipment());
         while (c.get_hitpoints() > 0 && character.get_hitpoints() > 0) {
             int decision = random.nextInt(100) + 1;
             if (decision <= 50) {
-                c.set_hitpoints(c.get_hitpoints() - character.get_attack());
+                int damage;
+                damage = calculateDamage(character, c);
+                c.set_hitpoints(c.get_hitpoints() - damage);
                 actions.add(character.get_name() + " attacks " + c.get_name() + " causing " +
-                        character.get_attack() + " damage. (" + character.get_name() + ": " +
+                        damage + " damage. (" + character.get_name() + ": " +
                         character.get_hitpoints() + "; " + c.get_name() + ": " + c.get_hitpoints() + ")");
             } else {
-                character.set_hitpoints(character.get_hitpoints() - c.get_attack());
+                int damage;
+                damage = calculateDamage(c, character);
+                character.set_hitpoints(character.get_hitpoints() - damage);
                 actions.add(c.get_name() + " attacks " + character.get_name() + " causing " +
-                        c.get_attack() + " damage. (" + character.get_name() + ": " +
+                        damage + " damage. (" + character.get_name() + ": " +
                         character.get_hitpoints() + "; " + c.get_name() + ": " + c.get_hitpoints() + ")");
             }
         }
@@ -157,12 +169,29 @@ public class CharacterController {
             levelUpCharacter();
             characterModel.save();
             actions.add(character.get_name() + " has defeated " + c.get_name());
+            character.takeEquipment(c.getWeapon(), c.getArmor(), c.getHelm());
+            actions.add(character.get_name() + " has found " + c.getEquipment());
             view.showFightSummary(actions);
         } else {
             actions.add(character.get_name() + " has been defeated by " + c.get_name());
             view.showFightSummary(actions);
-            startGame();
         }
+    }
+
+    private int calculateDamage (Character attacker, Character deffender) {
+        int damage;
+        if (deffender.get_defense() >= 80) {
+            damage = (int)(attacker.get_attack() * 0.2);
+            if (damage == 0) {
+                damage = 2;
+            }
+        } else {
+            damage = (int)(attacker.get_attack() * ((100 - deffender.get_defense())/100.0));
+            if (damage == 0) {
+                damage = 2;
+            }
+        }
+        return damage;
     }
 
     private void navigate () {
