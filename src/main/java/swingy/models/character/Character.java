@@ -1,11 +1,20 @@
 package swingy.models.character;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 public class Character {
+    @NotNull
     private String _name;
+    @NotNull
     private String _class;
+    @Min(value = 1)
     private int _level;
+    @Min(value = 0)
     private int _experience;
+    @Min(value = 1)
     private int _attack;
+    @Min(value = 1)
     private int _defense;
     private int _hitpoints;
     private int[] pos = new int[2];

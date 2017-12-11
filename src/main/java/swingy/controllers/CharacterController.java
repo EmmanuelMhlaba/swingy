@@ -101,9 +101,9 @@ public class CharacterController {
             enemies.add(tmpC);
         }
         // For testing
-        for (Character c : enemies) {
+        /*for (Character c : enemies) {
             System.out.println (c.get_name() + " - " + Arrays.toString(c.get_pos()));
-        }
+        }*/
     }
 
     private boolean inBounds () {
