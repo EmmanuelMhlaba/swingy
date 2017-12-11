@@ -193,11 +193,12 @@ public class CharacterController {
 
     private void levelUpCharacter () {
         int xpNeeded = (int) (character.get_level() * 1000 + Math.pow(character.get_level() - 1, 2) * 450);
+        int[] stats = characterSpawner.getBaseStats(character.get_class());
         if (character.get_experience() >= xpNeeded) {
             character.set_experience(character.get_experience() - xpNeeded);
-            character.set_attack((int) (character.get_attack() * 1.5));
-            character.set_hitpoints((int) (20 * (1.6 * character.get_level())));
-            character.set_defense((int) (character.get_defense() * 1.7));
+            character.set_attack((int) (stats[0] * character.get_level() * 1.5));
+            character.set_defense((int) (stats[1] * character.get_level() * 1.6));
+            character.set_hitpoints((int) (stats[2] * character.get_level() * 1.7));
             character.set_level(character.get_level() + 1);
             view.displayMessage(character.get_name() + " is now at level " + character.get_level());
         }

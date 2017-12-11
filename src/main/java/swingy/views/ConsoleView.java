@@ -94,14 +94,31 @@ public class ConsoleView implements View {
             showCharacterCreation();
         } else {
             nameClass[0] = tmp;
-            System.out.print ("Enter the character's class (e.g. 'Warrior' or 'Thief'): ");
-            tmp = scanner.next().trim();
-            if (tmp.length() == 0) {
-                displayMessage("Please enter the character's class");
-                showCharacterCreation();
+            System.out.println ("Character types");
+            System.out.println ("1) Warrior");
+            System.out.println ("2) Tank");
+            System.out.print ("Select the character's class: ");
+            if (scanner.hasNextInt()) {
+                int intTmp = scanner.nextInt();
+                if (intTmp >= 1 && intTmp <= 2) {
+                    switch (intTmp) {
+                        case 1:
+                            nameClass[1] = "Warrior";
+                            System.out.println ("==========\n");
+                            break;
+                        case 2:
+                            nameClass[1] = "Tank";
+                            System.out.println ("==========\n");
+                            break;
+                    }
+                } else {
+                    displayMessage("Please select one of the given options");
+                    showCharacterCreation();
+                }
             } else {
-                nameClass[1] = tmp;
-                System.out.println ("==========\n");
+                scanner.next();
+                displayMessage("Please select one of the given options");
+                showCharacterCreation();
             }
         }
     }
