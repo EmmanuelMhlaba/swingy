@@ -50,7 +50,8 @@ public class WindowView {
     public void clearAllTextBoxes() {
         mainMenuPanel.setTextFieldText("");
         characterLoadPanel.setTextFieldText("");
-        // TODO characterCreatePanel.setTextFieldText("");
+        characterCreatePanel.setCharacterClassText("");
+        characterCreatePanel.setCharacterNameText("");
     }
 
     public String getMainMenuPanelText () {
@@ -61,9 +62,11 @@ public class WindowView {
         return characterLoadPanel.getTextFieldText().trim();
     }
 
-    public String getCharacterCreatePanelText () {
-        // TODO return characterCreatePanel.getTextFieldText().trim();
-        return "SS";
+    public String[] getCharacterCreatePanelText () {
+        String[] tmp = new String[2];
+        tmp[0] = characterCreatePanel.getCharacterName().trim();
+        tmp[1] = characterCreatePanel.getCharacterClass().trim();
+        return tmp;
     }
 
     public void showMainMenuPanel() {
