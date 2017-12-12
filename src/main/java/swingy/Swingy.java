@@ -4,7 +4,7 @@ import swingy.controllers.ConsoleController;
 import swingy.controllers.WindowController;
 import swingy.models.character.CharacterModel;
 import swingy.views.ConsoleView;
-import swingy.views.WindowView;
+import swingy.views.window.WindowView;
 
 public class Swingy {
     public static void main (String[] args) {
