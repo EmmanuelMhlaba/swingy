@@ -7,13 +7,37 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class WindowView extends JFrame implements View {
+    private JTextArea taOutput;
+    private JTextField tfInput;
+    private JButton btnSubmit;
+
     public WindowView() {
-        this.setSize(400, 400);
+        createView();
         this.setTitle("Swingy");
-        this.setResizable(false);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(400, 400);
+        this.setResizable(false);
         this.setVisible(true);
+    }
+
+    private void createView () {
+        JPanel panel = new JPanel();
+        getContentPane().add(panel);
+        taOutput = new JTextArea();
+        taOutput.setLineWrap(true);
+        taOutput.setWrapStyleWord(true);
+        taOutput.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(taOutput);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setPreferredSize(new Dimension(380, 330));
+        panel.add(scrollPane);
+        JLabel label = new JLabel("Enter: ");
+        panel.add(label);
+        tfInput = new JTextField(15);
+        panel.add(tfInput);
+        btnSubmit = new JButton("Submit");
+        panel.add(btnSubmit);
     }
 
     public void showCharacterSelection(ArrayList<Character> characters) {
