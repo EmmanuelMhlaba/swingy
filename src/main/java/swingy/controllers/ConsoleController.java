@@ -3,14 +3,14 @@ package swingy.controllers;
 import swingy.models.character.Character;
 import swingy.models.character.CharacterModel;
 import swingy.models.character.builder.CharacterSpawner;
-import swingy.views.View;
+import swingy.views.ConsoleView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class CharacterController {
-    private View view;
+public class ConsoleController {
+    private ConsoleView view;
     private CharacterModel characterModel;
     private Character character = null;
     private ArrayList<Character> enemies = new ArrayList<Character>();
@@ -18,9 +18,10 @@ public class CharacterController {
     private Random random= new Random ();
     private int mapSize = -1;
 
-    public CharacterController(View view, CharacterModel characterModel) {
+    public ConsoleController(ConsoleView view, CharacterModel characterModel) {
         this.view = view;
         this.characterModel = characterModel;
+        startGame();
     }
 
     private void selectCharacter () {

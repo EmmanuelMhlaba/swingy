@@ -1,94 +1,63 @@
 package swingy.views;
 
-import swingy.models.character.Character;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.awt.event.ActionListener;
 
-public class WindowView extends JFrame implements View {
-    private JTextArea taOutput;
-    private JTextField tfInput;
-    private JButton btnSubmit;
+public class WindowView {
+    JPanel mainPanel = new JPanel();
+    CardLayout cardLayout = new CardLayout();
+    // Start page buttons
+    JButton btnNewGame = new JButton("New game");
+    JButton btnLoadGame = new JButton("Load game");
 
     public WindowView() {
-        createView();
-        this.setTitle("Swingy");
-        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null);
-        this.setSize(400, 400);
-        this.setResizable(false);
-        this.setVisible(true);
+        mainPanel.setLayout(cardLayout);
+        createCharacterCreatePage();
+        createCharacterLoadPage();
+        createStartPage();
+        cardLayout.show(mainPanel, "StartPanel");
+        setupFrame();
     }
 
-    private void createView () {
-        JPanel panel = new JPanel();
-        getContentPane().add(panel);
-        taOutput = new JTextArea();
-        taOutput.setLineWrap(true);
-        taOutput.setWrapStyleWord(true);
-        taOutput.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(taOutput);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setPreferredSize(new Dimension(380, 330));
-        panel.add(scrollPane);
-        JLabel label = new JLabel("Enter: ");
-        panel.add(label);
-        tfInput = new JTextField(15);
-        panel.add(tfInput);
-        btnSubmit = new JButton("Submit");
-        panel.add(btnSubmit);
+    private void setupFrame () {
+        JFrame mainFrame = new JFrame();
+        mainFrame.add(mainPanel);
+        mainFrame.setTitle("Swingy");
+        mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setSize(400, 400);
+        mainFrame.setResizable(false);
+        mainFrame.setVisible(true);
     }
 
-    public void showCharacterSelection(ArrayList<Character> characters) {
-
+    private void createCharacterLoadPage() {
+        JPanel characterSelectPanel = new JPanel();
+        characterSelectPanel.setBackground(Color.BLUE);
+        mainPanel.add(characterSelectPanel, "CharacterLoadPanel");
     }
 
-    public int getOption() {
-        return 0;
+    private void createStartPage () {
+        JPanel startPanel = new JPanel();
+        JLabel lblPage = new JLabel("Main Menu", SwingConstants.CENTER);
+        lblPage.setPreferredSize(new Dimension(390, 50));
+        startPanel.add (lblPage);
+        startPanel.add (btnLoadGame);
+        startPanel.add (btnNewGame);
+        mainPanel.add(startPanel, "StartPanel");
     }
 
-    public void displayMessage(String msg) {
-
+    private void createCharacterCreatePage () {
+        JPanel characterCreatePanel = new JPanel();
+        characterCreatePanel.setBackground(Color.GREEN);
+        mainPanel.add(characterCreatePanel, "CharacterCreatePanel");
     }
 
-    public boolean goToPreviousMenu() {
-        return false;
+    public void addLoadCharacterButtonListener(ActionListener actionListener) {
+        btnLoadGame.addActionListener(actionListener);
     }
 
-    public void showStartMenu() {
-
-    }
-
-    public void exit() {
-
-    }
-
-    public void showCharacterCreation() {
-
-    }
-
-    public String[] getNameClass() {
-        return new String[0];
-    }
-
-    public void showPlayScreen(Character character) {
-
-    }
-
-    public void showYesNoDialog(String question) {
-
-    }
-
-    public boolean getAnswer() {
-        return false;
-    }
-
-    public void showNavigationOptions(Character character) {
-
-    }
-
-    public void showFightSummary(ArrayList<String> summary) {
-
+    public void showLoadCharacterScreen () {
+        cardLayout.show(mainPanel, "CharacterLoadPanel");
     }
 }
