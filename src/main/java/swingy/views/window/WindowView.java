@@ -6,12 +6,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class WindowView {
     JFrame mainFrame = new JFrame();
     JPanel mainPanel = new JPanel();
     CJPanel1 mainMenuPanel = new CJPanel1("Main Menu");
     CJPanel1 characterLoadPanel = new CJPanel1("Character Load");
+    CJPanel1 playPanel = new CJPanel1("Play");
     CJPanel2 characterCreatePanel = new CJPanel2("Character Create");
     CardLayout cardLayout = new CardLayout();
 
@@ -20,6 +22,7 @@ public class WindowView {
         mainPanel.add(mainMenuPanel, mainMenuPanel.getPanelName());
         mainPanel.add(characterLoadPanel, characterLoadPanel.getPanelName());
         mainPanel.add(characterCreatePanel, characterCreatePanel.getPanelName());
+        mainPanel.add(playPanel, playPanel.getPanelName());
         showMainMenuPanel();
         setupFrame();
     }
@@ -32,6 +35,10 @@ public class WindowView {
         mainFrame.setSize(400, 400);
         mainFrame.setResizable(false);
         mainFrame.setVisible(true);
+    }
+
+    public void setPlayPanelListener(ActionListener actionListener) {
+        playPanel.setButtonListener(actionListener);
     }
 
     public void setCharacterLoadPanelListener(ActionListener actionListener) {
@@ -52,6 +59,11 @@ public class WindowView {
         characterLoadPanel.setTextFieldText("");
         characterCreatePanel.setCharacterClassText("");
         characterCreatePanel.setCharacterNameText("");
+        playPanel.setTextFieldText("");
+    }
+
+    public String getPlayPanelText () {
+        return playPanel.getTextFieldText().trim();
     }
 
     public String getMainMenuPanelText () {
@@ -67,6 +79,10 @@ public class WindowView {
         tmp[0] = characterCreatePanel.getCharacterName().trim();
         tmp[1] = characterCreatePanel.getCharacterClass().trim();
         return tmp;
+    }
+
+    public void showPlayPanel () {
+        cardLayout.show(mainPanel, playPanel.getPanelName());
     }
 
     public void showMainMenuPanel() {
@@ -98,5 +114,29 @@ public class WindowView {
 
     public void displayMessage (String msg) {
         JOptionPane.showMessageDialog(mainFrame, msg);
+    }
+
+    public CJPanel1 getPlayPanel() {
+        return playPanel;
+    }
+
+    public void showNavigationOptions(Character character) {
+        playPanel.appendTextAreaText ("===== Navigation =====\n");
+        playPanel.appendTextAreaText ("Current direction: " + Arrays.toString(character.get_pos()) + "\n");
+        playPanel.appendTextAreaText ("Select a direction to move towards\n");
+        playPanel.appendTextAreaText ("1) North\n");
+        playPanel.appendTextAreaText ("2) East\n");
+        playPanel.appendTextAreaText ("3) South\n");
+        playPanel.appendTextAreaText ("4) West\n");
+        playPanel.appendTextAreaText ("5) Main menu\n");
+        playPanel.appendTextAreaText("==========\n");
+    }
+
+    public boolean showConfirmDialog (String s) {
+        int dialogResult = JOptionPane.showConfirmDialog (null, s,"Note", JOptionPane.YES_NO_OPTION);
+        if(dialogResult == JOptionPane.YES_OPTION){
+            return true;
+        }
+        return false;
     }
 }
