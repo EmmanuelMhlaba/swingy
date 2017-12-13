@@ -20,7 +20,8 @@ public class WindowController {
     private int mapSize;
     private Random random = new Random();
     private ArrayList<Character> enemies = new ArrayList<Character>();
-    CJPanel1 playPanel = null;
+    private CJPanel1 playPanel = null;
+    private int[] oldPos = new int[2];
 
     public WindowController(WindowView view, CharacterModel characterModel) {
         this.view = view;
@@ -105,8 +106,6 @@ public class WindowController {
 
     private class PlayPanelListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            int[] oldPos = new int[2];
-            System.arraycopy(character.get_pos(), 0, oldPos, 0, oldPos.length);
             if (view.getPlayPanelText().trim().equals("")) {
                 if (inBounds() && character.get_hitpoints() > 0) {
                     int decision = random.nextInt(100) + 1;
@@ -136,6 +135,7 @@ public class WindowController {
                 try {
                     tmp = Integer.parseInt(view.getPlayPanelText());
                     if (tmp >= 1 && tmp <= 5) {
+                        System.arraycopy(character.get_pos(), 0, oldPos, 0, oldPos.length);
                         navigate(tmp);
                     } else {
                         view.displayMessage("Please enter one of the given options");
@@ -180,6 +180,7 @@ public class WindowController {
         character.set_pos(pos);
         populateEnemies();
         playPanel.appendTextAreaText("Playing with: " + character.get_name() + "\n");
+        System.arraycopy(character.get_pos(), 0, oldPos, 0, oldPos.length);
         view.showNavigationOptions(character);
     }
 
